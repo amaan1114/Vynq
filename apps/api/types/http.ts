@@ -9,6 +9,10 @@ export interface HttpResponse<T = unknown> {
     message: string
 }
 
+export interface TokenPayload {
+    userEmail: string
+}
+
 export interface HttpErrorOptions<T = unknown> {
     data?: T
     statusCode: number

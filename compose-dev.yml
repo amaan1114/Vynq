@@ -1,0 +1,89 @@
+x-cassandra-common: &cassandra-common
+  image: cassandra:4.1
+  networks:
+    - chat-network
+  # The image has no env var for auth, so enable PasswordAuthenticator in cassandra.yaml before boot.
+  command: >
+    bash -c "sed -i 's/^authenticator:.*/authenticator: PasswordAuthenticator/; s/^authorizer:.*/authorizer: CassandraAuthorizer/' /etc/cassandra/cassandra.yaml
+    && exec docker-entrypoint.sh cassandra -f"
+  healthcheck:
+    # nodetool skips CQL auth: the default `cassandra` role logs in at QUORUM, which fails until 2 nodes are up.
+    test: ["CMD-SHELL", "nodetool info 2>/dev/null | grep -q 'Native Transport active: true' || exit 1"]
+    interval: 15s
+    timeout: 10s
+    retries: 10
+    start_period: 60s
+
+x-cassandra-env: &cassandra-env
+  CASSANDRA_CLUSTER_NAME: DoomsDayChat
+  CASSANDRA_SEEDS: cassandra-1
+  CASSANDRA_DC: datacenter1
+  CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+  MAX_HEAP_SIZE: 512M
+  HEAP_NEWSIZE: 100M
+
+services:
+  cassandra-1:
+    <<: *cassandra-common
+    container_name: cassandra-1
+    hostname: cassandra-1
+    environment:
+      <<: *cassandra-env
+      CASSANDRA_RACK: rack1
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra1-data:/var/lib/cassandra
+
+  # Nodes join one at a time: Cassandra refuses concurrent bootstraps.
+  cassandra-2:
+    <<: *cassandra-common
+    container_name: cassandra-2
+    hostname: cassandra-2
+    environment:
+      <<: *cassandra-env
+      CASSANDRA_RACK: rack2
+    volumes:
+      - cassandra2-data:/var/lib/cassandra
+    depends_on:
+      cassandra-1:
+        condition: service_healthy
+
+  cassandra-3:
+    <<: *cassandra-common
+    container_name: cassandra-3
+    hostname: cassandra-3
+    environment:
+      <<: *cassandra-env
+      CASSANDRA_RACK: rack3
+    volumes:
+      - cassandra3-data:/var/lib/cassandra
+    depends_on:
+      cassandra-2:
+        condition: service_healthy
+
+  redis:
+    image: redis:8
+    container_name: chat-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - chat-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  chat-network:
+    driver: bridge
+
+volumes:
+  cassandra1-data:
+  cassandra2-data:
+  cassandra3-data:
+  redis-data:
