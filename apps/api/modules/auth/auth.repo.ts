@@ -24,3 +24,4 @@ export const addUser = async(userData:{email:string, password:string, name?:stri
     await user.saveAsync();
     return user;
 }
+

@@ -1,7 +1,8 @@
 import type { CookieOptions, NextFunction, Request, Response } from 'express';
 import {httpResponse} from '../../utils/httpResponse.js';
 import { config } from '../../utils/config.js';
-import { signUpService, signInService, verifyUserService, refreshTokenService } from './auth.services.js';
+import { signUpService, signInService, verifyUserService, refreshTokenService,getMeService } from './auth.services.js';
+
 
 // httpOnly keeps tokens out of reach of client JS; secure is only enforced in production so cookies still work over http://localhost
 const authCookieOptions: CookieOptions = {
@@ -78,6 +79,23 @@ export const refreshTokenController = async(req: Request, res: Response, next: N
             data: null,
             statusCode: 200,
             message: 'Tokens refreshed successfully'
+        });
+    }catch(err){
+        return next(err);
+    }
+}
+
+export const getMeController = async(req: Request, res: Response, next: NextFunction)=>{
+    try{
+        const user = await getMeService(req.user?.userEmail as string);
+
+        return httpResponse({
+            success: true,
+            req,
+            res,
+            data: user,
+            statusCode: 200,
+            message: 'User retrieved successfully'
         });
     }catch(err){
         return next(err);

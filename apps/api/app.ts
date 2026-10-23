@@ -8,6 +8,8 @@ import { openApiSpec } from './docs/openapi.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { config } from './utils/config.js';
+import userRouter from './modules/users/user.route.js';
+import conversationRouter from './modules/conversations/conversations.route.js';
 export const app: Express = express();
 
 // Allow the frontend to call the API with cookies; credentials requires an explicit origin, not '*'
@@ -40,8 +42,10 @@ app.get("/health", (req, res) => {
         message: "Health check successful"
     })
 });
-app.use('/api/v1/auth', authRouter);
 
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/conversations',conversationRouter);
 
 
 // Global error handling middleware
