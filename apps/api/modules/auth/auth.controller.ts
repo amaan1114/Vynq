@@ -85,6 +85,24 @@ export const refreshTokenController = async(req: Request, res: Response, next: N
     }
 }
 
+export const signOutController = async(req: Request, res: Response, next: NextFunction)=>{
+    try{
+        // clearCookie only removes a cookie when path/sameSite/secure/httpOnly match the ones it was set with
+        res.clearCookie('accessToken', authCookieOptions);
+        res.clearCookie('refreshToken', authCookieOptions);
+        return httpResponse({
+            success: true,
+            req,
+            res,
+            data: null,
+            statusCode: 200,
+            message: 'User signed out successfully'
+        });
+    }catch(err){
+        return next(err);
+    }
+}
+
 export const getMeController = async(req: Request, res: Response, next: NextFunction)=>{
     try{
         const user = await getMeService(req.user?.userEmail as string);

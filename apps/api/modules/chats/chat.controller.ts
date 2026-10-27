@@ -19,20 +19,3 @@ export const getMessageController = async (req:Request,res:Response,next:NextFun
     }
 }
 
-export const sendMessageController = async (req:Request,res:Response,next:NextFunction)=>{
-    try{
-        const {convoId,content,messageType} = req.body;
-        // sender comes from the verified token, not the body, so a client can't send as someone else
-        const sentMessage = await sendMessageService(convoId as string,req.user?.id as string,content as string,messageType);
-        return httpResponse({
-            success: true,
-            req,
-            res,
-            data: sentMessage,
-            statusCode: 201,
-            message: 'Message sent successfully'
-        });
-    }catch(err){
-        next(err);
-    }
-}

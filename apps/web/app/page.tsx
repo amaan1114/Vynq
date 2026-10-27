@@ -1,102 +1,93 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
+import Link from "next/link";
+import { GlobalNav } from "@/components/GlobalNav";
+import { RedirectIfSignedIn } from "@/components/RedirectIfSignedIn";
 import styles from "./page.module.css";
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+const features = [
+  {
+    title: "One-to-one, always.",
+    body: "Every conversation is between exactly two people. Start one and it's the same thread every time.",
+  },
+  {
+    title: "Find people fast.",
+    body: "Search by name or email and you're one tap from a new conversation.",
+  },
+  {
+    title: "Pick up where you left off.",
+    body: "Your history is kept in order, newest first, on every device you sign in to.",
+  },
+];
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      <RedirectIfSignedIn />
+      <GlobalNav />
+      <main>
+        <section className={`${styles.tile} ${styles.light}`}>
+          <p className={styles.eyebrow}>Vynq</p>
+          <h1 className={styles.hero}>Conversations, without the noise.</h1>
+          <p className={styles.lead}>Private messaging for the people who matter.</p>
+          <div className={styles.ctas}>
+            <Link href="/signup" className="btn btn-primary">
+              Get started
+            </Link>
+            <Link href="/signin" className="btn btn-secondary">
+              Sign in
+            </Link>
+          </div>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
+          {/* Stands in for product photography until we have screenshots */}
+          <div className={styles.device} aria-hidden="true">
+            <div className={styles.deviceHeader}>Maya</div>
+            <div className={styles.thread}>
+              <span className={`${styles.bubble} ${styles.them}`}>Are we still on for Friday?</span>
+              <span className={`${styles.bubble} ${styles.me}`}>Yes! 7pm at the usual place.</span>
+              <span className={`${styles.bubble} ${styles.them}`}>Perfect. See you there.</span>
+            </div>
+          </div>
+        </section>
+
+        <section className={`${styles.tile} ${styles.dark} on-dark`}>
+          <h2 className={styles.display}>Private by design.</h2>
+          <p className={styles.leadOnDark}>
+            Sessions live in secure, http-only cookies. Every account is verified by email before it can send a
+            word.
+          </p>
+        </section>
+
+        <section className={`${styles.tile} ${styles.parchment}`}>
+          <h2 className={styles.display}>Everything you need. Nothing you don&apos;t.</h2>
+          <div className={styles.grid}>
+            {features.map((feature) => (
+              <article key={feature.title} className={styles.card}>
+                <h3 className={styles.cardTitle}>{feature.title}</h3>
+                <p className={styles.cardBody}>{feature.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={`${styles.tile} ${styles.dark2} on-dark`}>
+          <h2 className={styles.display}>Start a conversation.</h2>
+          <p className={styles.leadOnDark}>It takes less than a minute to set up.</p>
+          <div className={styles.ctas}>
+            <Link href="/signup" className="btn btn-primary">
+              Create your account
+            </Link>
+          </div>
+        </section>
       </main>
+
       <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
+        <div className={styles.footerInner}>
+          <p>Copyright © {new Date().getFullYear()} Vynq. All rights reserved.</p>
+          <nav className={styles.footerLinks} aria-label="Footer">
+            <Link href="/signin">Sign in</Link>
+            <Link href="/signup">Create account</Link>
+          </nav>
+        </div>
       </footer>
-    </div>
+    </>
   );
 }

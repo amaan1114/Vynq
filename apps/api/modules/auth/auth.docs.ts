@@ -80,4 +80,13 @@ export const authPaths = {
             },
         },
     },
+    '/api/v1/auth/signout': {
+        post: {
+            tags: ['Auth'],
+            summary: 'Clear the accessToken and refreshToken cookies',
+            responses: {
+                200: response('User signed out'),
+            },
+        },
+    },
 };

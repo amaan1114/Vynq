@@ -11,7 +11,18 @@ import { config } from './utils/config.js';
 import userRouter from './modules/users/user.route.js';
 import conversationRouter from './modules/conversations/conversations.route.js';
 import chatRouter from './modules/chats/chat.routes.js';
-export const app: Express = express();
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+const app: Express = express();
+export const httpServer = createServer(app);
+
+
+export const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
+});
 
 // Allow the frontend to call the API with cookies; credentials requires an explicit origin, not '*'
 app.use(cors({ origin: config.CLIENT_URL, credentials: true }));

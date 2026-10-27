@@ -1,0 +1,49 @@
+/* DESIGN.md components.global-nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 44px;
+  background: var(--color-surface-black);
+  color: var(--color-body-on-dark);
+  font-size: 12px;
+  letter-spacing: -0.12px;
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 var(--space-md);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.374px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.link {
+  opacity: 0.8;
+}
+
+.link:hover {
+  opacity: 1;
+}
+
+.cta {
+  padding: 4px 12px;
+  border-radius: var(--rounded-pill);
+  background: var(--color-primary);
+  color: #ffffff;
+}
