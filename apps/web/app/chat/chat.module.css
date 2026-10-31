@@ -1,0 +1,390 @@
+/* Two panes: chat list on the left, open chat on the right; one pane at a time below 834px */
+.app {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  height: 100dvh;
+  background: var(--color-paper);
+}
+
+.loading {
+  display: grid;
+  place-items: center;
+  height: 100dvh;
+  color: var(--color-ink-soft);
+}
+
+/* Sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4) var(--space-4);
+}
+
+.sidebarTitle {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.me {
+  max-width: 200px;
+  margin-top: var(--space-1);
+  overflow: hidden;
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* DESIGN.md components.button-quiet: small, outlined, for secondary actions in app chrome */
+.utilityButton {
+  flex-shrink: 0;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 120ms ease;
+}
+
+.utilityButton:hover:not(:disabled) {
+  border-color: var(--color-ink);
+}
+
+.utilityButton:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.search {
+  padding: 0 var(--space-4) var(--space-3);
+}
+
+/* DESIGN.md components.input, filled variant for search */
+.searchInput {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-4);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+}
+
+.searchInput::placeholder,
+.composerInput::placeholder {
+  color: var(--color-ink-soft);
+}
+
+.searchInput:focus-visible,
+.composerInput:focus-visible {
+  outline: none;
+  border-color: var(--color-ballpoint);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px var(--color-ballpoint-wash);
+}
+
+.list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--space-2) var(--space-4);
+}
+
+.listLabel {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.listHint,
+.listError {
+  padding: var(--space-4) var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.listError {
+  color: var(--color-error);
+}
+
+.backToChats {
+  display: block;
+  margin: var(--space-3) var(--space-3) 0;
+  border: none;
+  background: none;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3);
+  border: none;
+  border-radius: var(--radius-control);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.row:hover:not(:disabled) {
+  background: var(--color-paper);
+}
+
+.row:disabled {
+  cursor: default;
+}
+
+.rowActive,
+.rowActive:hover:not(:disabled) {
+  background: var(--color-ballpoint-wash);
+}
+
+.avatar {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-ballpoint-wash);
+  font-weight: 700;
+  color: var(--color-ballpoint);
+}
+
+/* On the active row the wash is already the background */
+.rowActive .avatar {
+  background: var(--color-ballpoint);
+  color: var(--color-surface);
+}
+
+.rowText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.rowTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.rowName,
+.rowPreview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowName {
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.rowTime {
+  flex-shrink: 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.rowPreview {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+/* Open chat */
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: 68px;
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.chatHeader .avatar {
+  width: 36px;
+  height: 36px;
+  font-size: var(--text-sm);
+}
+
+.chatTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Only needed when the panes stack on small screens */
+.backButton {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-left: calc(-1 * var(--space-3));
+  border: none;
+  border-radius: var(--radius-control);
+  background: none;
+  font-size: 32px;
+  line-height: 1;
+  color: var(--color-ballpoint);
+  cursor: pointer;
+}
+
+.messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+.bubbleRow {
+  display: flex;
+}
+
+.mine {
+  justify-content: flex-end;
+}
+
+.theirs {
+  justify-content: flex-start;
+}
+
+/* DESIGN.md components.bubble: the small corner points at whoever said it */
+.bubble {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: var(--space-2);
+  max-width: min(72%, 34rem);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-bubble);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.mine .bubble {
+  border-bottom-right-radius: var(--radius-tail);
+  background: var(--color-ballpoint);
+  color: var(--color-surface);
+}
+
+.theirs .bubble {
+  border: 1px solid var(--color-line);
+  border-bottom-left-radius: var(--radius-tail);
+  background: var(--color-surface);
+}
+
+.bubbleTime {
+  margin-left: auto;
+  font-size: 0.6875rem;
+  opacity: 0.72;
+}
+
+.composer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-line);
+  background: var(--color-surface);
+}
+
+.composerInput {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 var(--space-4);
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+}
+
+.sendError {
+  flex-basis: 100%;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-error);
+}
+
+/* No chat open: the empty pane points back at the list */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-7);
+}
+
+.emptyTitle {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.emptyText {
+  max-width: 28rem;
+  color: var(--color-ink-soft);
+}
+
+@media (max-width: 834px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: none;
+  }
+
+  .hasSelection .sidebar,
+  .app:not(.hasSelection) .empty {
+    display: none;
+  }
+
+  .backButton {
+    display: block;
+  }
+
+  .chatHeader,
+  .messages,
+  .composer {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+}

@@ -8,7 +8,21 @@ import { openApiSpec } from './docs/openapi.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { config } from './utils/config.js';
-export const app: Express = express();
+import userRouter from './modules/users/user.route.js';
+import conversationRouter from './modules/conversations/conversations.route.js';
+import chatRouter from './modules/chats/chat.routes.js';
+import { createServer } from "node:http";
+import { Server } from "socket.io";
+const app: Express = express();
+export const httpServer = createServer(app);
+
+
+export const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
+});
 
 // Allow the frontend to call the API with cookies; credentials requires an explicit origin, not '*'
 app.use(cors({ origin: config.CLIENT_URL, credentials: true }));
@@ -40,8 +54,11 @@ app.get("/health", (req, res) => {
         message: "Health check successful"
     })
 });
-app.use('/api/v1/auth', authRouter);
 
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/conversations',conversationRouter);
+app.use('/api/v1/chats',chatRouter);
 
 
 // Global error handling middleware

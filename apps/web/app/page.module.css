@@ -1,186 +1,182 @@
-.page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
-  min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-synthesis: none;
+/* Shared page width; content is left-aligned inside it */
+.hero,
+.steps,
+.footer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: var(--space-5);
+  padding-right: var(--space-5);
 }
 
-@media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-  }
+/* The one bold moment: the headline split across the page like an exchange */
+.hero {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-9);
 }
 
-.main {
+.headline {
   display: flex;
   flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
+  font-size: var(--text-hero);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
 }
 
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
-  margin: 0;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
+.voiceA {
+  align-self: flex-start;
+  color: var(--color-ink);
 }
 
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
+/* Their reply sits on the other side, in your accent */
+.voiceB {
+  align-self: flex-end;
+  max-width: 11ch;
+  margin-top: var(--space-4);
+  color: var(--color-ballpoint);
+  text-align: right;
 }
 
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
-  font-weight: 600;
+.intro {
+  max-width: var(--measure);
+  margin-top: var(--space-8);
+}
+
+.lead {
+  font-size: var(--text-md);
+  line-height: 1.45;
+  color: var(--color-ink-soft);
 }
 
 .ctas {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  font-family: var(--font-geist-sans);
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
+/* The reply arrives a beat after the first line, once, on load */
+@media (prefers-reduced-motion: no-preference) {
+  .voiceA,
+  .voiceB {
+    animation: arrive 500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .voiceB {
+    animation-delay: 550ms;
+  }
 }
 
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.25em);
+  }
 }
 
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
+.steps {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-9);
+  border-top: 1px solid var(--color-line);
 }
 
-button.secondary {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  font-family: var(--font-geist-sans);
-  border: 1px solid transparent;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-  background: transparent;
-  border-color: var(--gray-alpha-200);
-  min-width: 180px;
+.sectionTitle {
+  max-width: 18ch;
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.stepList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-7);
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: var(--space-4);
+  border-radius: 50%;
+  background: var(--color-ballpoint-wash);
+  color: var(--color-ballpoint);
+  font-weight: 700;
+}
+
+.stepTitle {
+  font-size: var(--text-md);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stepBody {
+  max-width: 32ch;
+  margin-top: var(--space-2);
+  color: var(--color-ink-soft);
 }
 
 .footer {
-  font-family: var(--font-geist-sans);
-  grid-row-start: 3;
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-6);
+  border-top: 1px solid var(--color-line);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
 }
 
-.footer a {
+.footerLinks {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: var(--space-5);
 }
 
-.footer img {
-  flex-shrink: 0;
+.footerLinks a:hover {
+  color: var(--color-ink);
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
+@media (max-width: 834px) {
+  .stepList {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
 
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .stepBody {
+    max-width: var(--measure);
   }
 }
 
-@media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
-
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
+@media (max-width: 640px) {
+  .hero,
+  .steps,
   .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .hero {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-8);
+  }
+
+  .intro {
+    margin-top: var(--space-7);
+  }
+
+  .sectionTitle {
+    font-size: var(--text-xl);
   }
 }

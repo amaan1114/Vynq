@@ -1,13 +1,49 @@
+/* Tokens from DESIGN.md; components should use these instead of raw hex */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #f2f4f8;
+  --color-surface: #ffffff;
+  --color-ink: #171a33;
+  --color-ink-soft: #565b7a;
+  --color-line: #d8dce8;
+  /* The one accent: your side of a conversation, and every action */
+  --color-ballpoint: #2a2acf;
+  --color-ballpoint-deep: #1e1ea3;
+  --color-ballpoint-wash: #e4e4fa;
+  --color-error: #b42318;
+
+  /* Set by next/font in app/layout.tsx */
+  --font-sans: var(--font-familjen), system-ui, sans-serif;
+
+  /* Major-third scale on a 16px base */
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5625rem;
+  --text-xl: 1.9375rem;
+  --text-2xl: 2.4375rem;
+  --text-hero: clamp(3rem, 10vw, 7.5rem);
+
+  --radius-control: 10px;
+  --radius-bubble: 18px;
+  --radius-tail: 4px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 112px;
+
+  --measure: 34rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html,
@@ -17,14 +53,12 @@ body {
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -32,19 +66,76 @@ a {
   text-decoration: none;
 }
 
-.imgDark {
-  display: none;
+button,
+input {
+  font: inherit;
+  color: inherit;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* Buttons (DESIGN.md components.button) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
 
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
-  }
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.btn-primary {
+  background: var(--color-ballpoint);
+  color: var(--color-surface);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-ballpoint-deep);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-ink);
+  border-color: var(--color-line);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-ink);
+}
+
+.text-link {
+  color: var(--color-ballpoint);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.text-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ballpoint);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

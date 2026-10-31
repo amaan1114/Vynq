@@ -12,8 +12,8 @@ export const signUpService = async(email: string, password: string)=>{
     }
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    await addUser({email, password: hashedPassword});
-    const token =await emailVerificationToken(email);
+    const user = await addUser({email, password: hashedPassword});
+    const token = emailVerificationToken(user.user_id.toString(), email);
     await sendVerificationEmail(email, token);
 }
 
@@ -28,12 +28,12 @@ export const signInService = async(email: string, password: string)=>{
         throw new HttpError({statusCode: 401, message: 'Invalid credentials'});
     }
     if(!user.is_verified){
-        await sendVerificationEmail(email, await emailVerificationToken(email)); // Resend verification email
+        await sendVerificationEmail(email, emailVerificationToken(user.user_id.toString(), email)); // Resend verification email
         throw new HttpError({statusCode: 403, message: 'Email not verified. Verification email resent.'});
     }
     return {
-        accessToken: accessToken(email),
-        refreshToken: refreshToken(email),
+        accessToken: accessToken(user.user_id.toString(), email),
+        refreshToken: refreshToken(user.user_id.toString(), email),
     };
 }
 
@@ -70,6 +70,22 @@ export const refreshTokenService = async(refreshToken: string)=>{
         throw new HttpError({statusCode: 401, message: 'User not found'});
     }
     return {
-        accessToken: accessToken(userEmail),
+        accessToken: accessToken(user.user_id.toString(), userEmail),
     };
+}
+
+export const getMeService = async(userEmail:string)=>{
+    const user = await getUserByEmail(userEmail);
+    if(!user){
+        throw new HttpError({statusCode: 404, message: 'User not found'});
+    }
+    const correctUser = {
+        id: user.user_id.toString(),
+        email: user.email,
+        name: user.name,
+        is_verified: user.is_verified,
+        created_at: user.created_at,
+        updated_at: user.updated_at
+    };
+    return correctUser;
 }

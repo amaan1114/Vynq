@@ -14,8 +14,11 @@ export const markUserAsVerified = async(userId:types.Uuid)=>{
 }
 
 export const addUser = async(userData:{email:string, password:string, name?:string})=>{
-    // UserModel.ts is registered as models.instance.User; user_id, is_verified and timestamps come from the model defaults
+    // UserModel.ts is registered as models.instance.User; is_verified and timestamps come from the model defaults
+    // user_id is set here because express-cassandra only applies defaults inside the INSERT and never writes them back,
+    // so user.user_id would still be undefined after saveAsync()
     const user = new models.instance.User({
+        user_id: models.uuid(),
         email: userData.email,
         name: userData.name,
         password_hash: userData.password,
@@ -24,3 +27,4 @@ export const addUser = async(userData:{email:string, password:string, name?:stri
     await user.saveAsync();
     return user;
 }
+
