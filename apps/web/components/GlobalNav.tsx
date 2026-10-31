@@ -13,8 +13,8 @@ export function GlobalNav() {
           <Link href="/signin" className={styles.link}>
             Sign in
           </Link>
-          <Link href="/signup" className={styles.cta}>
-            Get started
+          <Link href="/signup" className={`btn btn-primary ${styles.cta}`}>
+            Create an account
           </Link>
         </nav>
       </div>

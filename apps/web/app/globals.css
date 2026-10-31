@@ -1,43 +1,43 @@
 /* Tokens from DESIGN.md; components should use these instead of raw hex */
 :root {
-  --color-primary: #0066cc;
-  --color-primary-focus: #0071e3;
-  --color-primary-on-dark: #2997ff;
-  --color-ink: #1d1d1f;
-  --color-ink-muted-80: #333333;
-  --color-ink-muted-48: #7a7a7a;
-  --color-body-on-dark: #ffffff;
-  --color-body-muted: #cccccc;
-  --color-divider-soft: #f0f0f0;
-  --color-hairline: #e0e0e0;
-  --color-canvas: #ffffff;
-  --color-canvas-parchment: #f5f5f7;
-  --color-surface-pearl: #fafafc;
-  --color-surface-tile-1: #272729;
-  --color-surface-tile-2: #2a2a2c;
-  --color-surface-tile-3: #252527;
-  --color-surface-black: #000000;
-  /* DESIGN.md has no error state; this red is only for form errors */
-  --color-error: #e30000;
+  --color-paper: #f2f4f8;
+  --color-surface: #ffffff;
+  --color-ink: #171a33;
+  --color-ink-soft: #565b7a;
+  --color-line: #d8dce8;
+  /* The one accent: your side of a conversation, and every action */
+  --color-ballpoint: #2a2acf;
+  --color-ballpoint-deep: #1e1ea3;
+  --color-ballpoint-wash: #e4e4fa;
+  --color-error: #b42318;
 
-  --font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  --font-text: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  /* Set by next/font in app/layout.tsx */
+  --font-sans: var(--font-familjen), system-ui, sans-serif;
 
-  --rounded-sm: 8px;
-  --rounded-md: 11px;
-  --rounded-lg: 18px;
-  --rounded-pill: 9999px;
+  /* Major-third scale on a 16px base */
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.5625rem;
+  --text-xl: 1.9375rem;
+  --text-2xl: 2.4375rem;
+  --text-hero: clamp(3rem, 10vw, 7.5rem);
 
-  --space-xxs: 4px;
-  --space-xs: 8px;
-  --space-sm: 12px;
-  --space-md: 17px;
-  --space-lg: 24px;
-  --space-xl: 32px;
-  --space-xxl: 48px;
-  --space-section: 80px;
+  --radius-control: 10px;
+  --radius-bubble: 18px;
+  --radius-tail: 4px;
 
-  --product-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 72px;
+  --space-9: 112px;
+
+  --measure: 34rem;
 }
 
 * {
@@ -54,11 +54,10 @@ body {
 
 body {
   color: var(--color-ink);
-  background: var(--color-canvas);
-  font-family: var(--font-text);
-  font-size: 17px;
-  line-height: 1.47;
-  letter-spacing: -0.374px;
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -70,71 +69,73 @@ a {
 button,
 input {
   font: inherit;
-  letter-spacing: inherit;
   color: inherit;
 }
 
-/* Buttons (DESIGN.md components.button-*) */
+/* Buttons (DESIGN.md components.button) */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-xs);
+  gap: var(--space-2);
   min-height: 44px;
-  padding: 11px 22px;
-  border: 1px solid transparent;
-  border-radius: var(--rounded-pill);
-  font-family: var(--font-text);
-  font-size: 17px;
-  font-weight: 400;
+  padding: 10px 20px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  font-size: var(--text-base);
+  font-weight: 600;
   line-height: 1;
   cursor: pointer;
-  transition: transform 120ms ease;
-}
-
-.btn:active:not(:disabled) {
-  transform: scale(0.95);
-}
-
-.btn:focus-visible {
-  outline: 2px solid var(--color-primary-focus);
-  outline-offset: 2px;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
 }
 
 .btn:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 .btn-primary {
-  background: var(--color-primary);
-  color: #ffffff;
+  background: var(--color-ballpoint);
+  color: var(--color-surface);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-ballpoint-deep);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
+  color: var(--color-ink);
+  border-color: var(--color-line);
 }
 
-.on-dark .btn-secondary {
-  color: var(--color-primary-on-dark);
-  border-color: var(--color-primary-on-dark);
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-ink);
 }
 
 .text-link {
-  color: var(--color-primary);
+  color: var(--color-ballpoint);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 .text-link:hover {
-  text-decoration: underline;
-}
-
-.on-dark .text-link {
-  color: var(--color-primary-on-dark);
+  text-decoration-thickness: 2px;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary-focus);
+  outline: 2px solid var(--color-ballpoint);
   outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Familjen_Grotesk } from "next/font/google";
 import "./globals.css";
+
+const familjen = Familjen_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-familjen",
+});
 
 export const metadata: Metadata = {
   title: "Vynq",
@@ -12,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={familjen.variable}>
       <body>{children}</body>
     </html>
   );

@@ -1,78 +1,75 @@
+/* Auth screens: the form sits straight on the paper, left-aligned, no card */
 .page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  padding: var(--space-xxl) var(--space-md);
-  background: var(--color-canvas-parchment);
+  min-height: 100dvh;
+  padding: 0 var(--space-5) var(--space-8);
 }
 
 .logo {
-  font-family: var(--font-display);
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: 0.231px;
-  margin-bottom: var(--space-xl);
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: calc(1200px - 2 * var(--space-5));
+  height: 72px;
+  margin: 0 auto;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
-/* DESIGN.md store-utility-card */
 .card {
   width: 100%;
-  max-width: 420px;
-  padding: var(--space-xl);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--rounded-lg);
-  background: var(--color-canvas);
+  max-width: 400px;
+  margin: var(--space-8) auto 0;
 }
 
 .title {
-  font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 600;
+  font-size: var(--text-2xl);
+  font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.374px;
-  text-align: center;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
-  margin-top: var(--space-xs);
-  color: var(--color-ink-muted-80);
-  text-align: center;
+  margin-top: var(--space-2);
+  color: var(--color-ink-soft);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
+  gap: var(--space-5);
+  margin-top: var(--space-6);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xxs);
+  gap: var(--space-2);
 }
 
 .label {
-  font-size: 14px;
   font-weight: 600;
-  letter-spacing: -0.224px;
 }
 
-/* DESIGN.md search-input: pill, hairline border, 44px tall */
+/* DESIGN.md components.input */
 .input {
-  height: 44px;
-  padding: 0 20px;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: var(--rounded-pill);
-  background: var(--color-canvas);
-  font-size: 17px;
+  height: 48px;
+  padding: 0 var(--space-4);
+  border: 1.5px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.input:hover {
+  border-color: var(--color-ink-soft);
 }
 
 .input:focus-visible {
-  outline: 2px solid var(--color-primary-focus);
-  outline-offset: 0;
-  border-color: transparent;
+  outline: none;
+  border-color: var(--color-ballpoint);
+  box-shadow: 0 0 0 3px var(--color-ballpoint-wash);
 }
 
 .input[aria-invalid="true"] {
@@ -80,35 +77,43 @@
 }
 
 .hint {
-  padding: 0 20px;
-  font-size: 12px;
-  color: var(--color-ink-muted-48);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
 }
 
 .error {
-  font-size: 14px;
-  letter-spacing: -0.224px;
+  font-size: var(--text-sm);
+  font-weight: 500;
   color: var(--color-error);
-  text-align: center;
 }
 
 .submit {
   width: 100%;
-  margin-top: var(--space-xs);
+  min-height: 48px;
 }
 
 .footnote {
-  margin-top: var(--space-lg);
-  font-size: 14px;
-  letter-spacing: -0.224px;
-  color: var(--color-ink-muted-80);
-  text-align: center;
+  margin-top: var(--space-5);
+  color: var(--color-ink-soft);
 }
 
 .status {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-lg);
-  text-align: center;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 0 var(--space-4) var(--space-7);
+  }
+
+  .card {
+    margin-top: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+  }
 }
